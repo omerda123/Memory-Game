@@ -2,9 +2,20 @@ body{
     height: 100vh;
     margin: 0;
 }
+*{
+    box-sizing: border-box;
+}
 .col{
     border:1px solid black;
     flex:1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.col img{
+    width: 100px;
+    height: 100px;
 }
 
 .row{
@@ -27,6 +38,6 @@ body{
     width: 20%;
 }
 
-.name{
+.name, .themes{
     margin-top: 100px;
 }
