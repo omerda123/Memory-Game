@@ -1,0 +1,32 @@
+body{
+    height: 100vh;
+    margin: 0;
+}
+.col{
+    border:1px solid black;
+    flex:1;
+}
+
+.row{
+    display: flex;
+    height: 30vh;
+}
+
+.window{
+    display: flex;
+    height: 100vh;
+}
+.side-menu{
+    width: 20%;
+}
+
+.container{
+    width: 80%;
+}
+.score-board{
+    width: 20%;
+}
+
+.name{
+    margin-top: 100px;
+}
