@@ -11,7 +11,7 @@ body{
     position: relative;
 }
 .col {
-    border:1px solid black;
+    /* border:1px solid black; */
     flex:1;
     display: flex;
     justify-content: center;
@@ -20,8 +20,8 @@ body{
 
 
 .col img{
-    width: 100px;
-    height: 100px;
+    width: 13vw;
+    height: 30vh;
     position: absolute;
     /* transform:rotatey(-180deg); */
 
@@ -60,4 +60,56 @@ body{
 
 h1{
     margin:0;
+}
+
+.red{
+    color:red;
+}
+
+.side-menu input{
+    border: solid 1px red;
+}
+
+.game-over{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(50% - 426px);
+    display: none;
+}
+.game-over .play-again{
+    position: relative;
+    bottom: 60px;
+    font-size: 30px;
+    color:white;
+    cursor: pointer;
+}
+
+.winner{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(50% - 426px);
+    display: none;
+}
+.winner .winner-upper{
+    position: relative; 
+    top: 90px;
+    font-size: 40px;
+    color:#FEE51F; 
+}
+
+.winner .winner-lower{
+    position: relative; 
+    bottom: 120px;
+    font-size: 33px;
+    color:#FEE51F; 
+}
+
+.winner .winner-lower .winner-play-again{
+    cursor: pointer;
+}
+.winner img{
+    width: 852px;
+    height: 480px;
 }
