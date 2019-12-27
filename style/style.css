@@ -6,11 +6,19 @@ body{
     box-sizing: border-box;
 }
 .col{
+    position: relative;
+}
+.col , .card{
     border:1px solid black;
     flex:1;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.card{
+    position: absolute;
+    background-color: lightgray;
 }
 
 .col img{
@@ -38,6 +46,11 @@ body{
     width: 20%;
 }
 
-.name, .themes{
+.name, .themes {
     margin-top: 100px;
+}
+
+.score , .retries{
+    margin: 20px;
+    font-size : 5vh;
 }
