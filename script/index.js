@@ -9,9 +9,12 @@ class Board {
         array2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
 
-    createBoard(rows, cols) {
+    initGame(rows, cols) {
         this.rows = rows;
         this.cols = cols;
+        this.score = 0;
+        console.log(this.score);
+        let picId =1;
         for (let i = 0; i < rows; i++) {
             let row = document.createElement("div")
             row.className = "row"
@@ -20,34 +23,50 @@ class Board {
                 let col = document.createElement("div");
                 col.className = "col"
                 row.appendChild(col);
-                let pic = document.createElement("img");
-                pic.addEventListener("click", this.flipCard.bind(this));
-                pic.src = `./images/card.png`;
-                col.appendChild(pic);
+                let card = document.createElement("img");
+                card.addEventListener("click", this.flipCard.bind(this));
+                card.src = `./images/card.png`;
+                let img = document.createElement("img");
+                let random = this.randomPicNumberPairs(this.rows, this.cols);
+                img.src = `./images/pokemon/${random}.png`;
+                img.className = random; 
+                img.id = picId;  
+                card.className = random;
+                card.id = picId++;             
+                img.style.display = "none";
+                col.appendChild(card);
+                col.appendChild(img);
             }
         }
     }
 
     createBoardByDifficulty(e) {
+        gameBoard.clearBoard();
         switch (e.target.value) {
-            case "easy": gameBoard.clearBoard(); gameBoard.createBoard(3, 4);
+            case "easy": gameBoard.initGame(3, 4);
                 break;
-            case "medium": gameBoard.clearBoard(); gameBoard.createBoard(4, 5);
+            case "medium":  gameBoard.initGame(4, 5);
                 break;
-            case "hard": gameBoard.clearBoard(); gameBoard.createBoard(4, 6);
+            case "hard": gameBoard.initGame(4, 6);
                 break;
-            default: gameBoard.clearBoard(); gameBoard.createBoard(3, 4);
+            default: gameBoard.initGame(3, 4);
                 break;
         }
     }
 
+    changeScore(amount){
+        console.log(this.score)
+        this.score = this.score + amount;
+        scoreDiv.innerHTML = `Score <h1> ${this.score} <h1/>`;
+    }
+
+ 
+
     flipCard(e) {
-        score += 10;
-        scoreDiv.innerHTML = `Score ${score}`;
+        e.target.style.display = "none";
+        document.querySelectorAll(`[id='${e.target.id}']`)[1].style.display = "block";
+        this.changeScore(10);
 
-
-
-        // clicks = 1;
         if (clicks === 1) {
             this.e1 = e;
             clicks++;
@@ -55,14 +74,22 @@ class Board {
         else if (clicks === 2) {
             this.e2 = e;
             if (this.checkPairs()) {
-                score += 30;
+                this.changeScore(30);
+                document.querySelectorAll(`[id='${this.e1.target.id}']`)[1].style.display = "block";
+                document.querySelectorAll(`[id='${this.e2.target.id}']`)[1].style.display = "block";    
             }
             else {
-                score -= 10;
+                this.changeScore(-20);
+                setTimeout (() => {
+                    document.querySelectorAll(`[id='${this.e1.target.id}']`)[0].style.display = "block";
+                    document.querySelectorAll(`[id='${this.e1.target.id}']`)[1].style.display = "none";
+                    document.querySelectorAll(`[id='${this.e2.target.id}']`)[0].style.display = "block";
+                    document.querySelectorAll(`[id='${this.e2.target.id}']`)[1].style.display = "none";
 
+                } , 500)
                 if (retries > 1) {
                     retries--;
-                    retriesDiv.innerHTML = `Retries ${retries}`;
+                    retriesDiv.innerHTML = `Retries <h1>${retries}</h1>`;
                 }
                 else {
                     console.log("game over")
@@ -79,16 +106,15 @@ class Board {
 
 
 
-        let random = this.randomPicNumberPairs(this.rows, this.cols);
-        e.target.id = random;
-        e.target.src = `./images/pokemon/${random}.png`;
+ 
+    }
+    checkPairs() {
+        if (this.e1.target.className ===this.e2.target.className)
+            return true;
+        else   
+            return false;
     }
 
-    checkPairs() {
-        console.log(this.e1.target.id);
-        console.log(this.e2.target.id);
-        return false;
-    }
     randomPicNumberPairs(rows, cols) {
         let numOfPics = rows * cols / 2;
         const array1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -114,14 +140,6 @@ class Board {
 
 }
 
-const toggleClass = (element, classes) => {
-    console.log(element.classList)
-    if (element.classList.forEach(_class => _class === _class))
-        element.classList.remove(classes)
-    else
-        element.classList.add(classes)
-}
-
 
 
 let array2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -132,13 +150,11 @@ const scoreDiv = document.querySelector(".score");
 const retriesDiv = document.querySelector(".retries");
 
 let retries = 5;
-let score = 0;
 let clicks = 1;
-retriesDiv.innerHTML = `Retries ${retries}`;
-scoreDiv.innerHTML = `Score ${score}`;
+
 
 // const nameInput = document.querySelector(".name");
 difficulty.forEach(item => item.addEventListener("click", gameBoard.createBoardByDifficulty));
-gameBoard.createBoard(3, 4);
+gameBoard.initGame(3, 4);
 
 

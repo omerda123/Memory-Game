@@ -4,11 +4,13 @@ body{
 }
 *{
     box-sizing: border-box;
+    font-family: 'Audiowide', cursive;
+    text-align: center;
 }
 .col{
     position: relative;
 }
-.col , .card{
+.col {
     border:1px solid black;
     flex:1;
     display: flex;
@@ -16,14 +18,13 @@ body{
     align-items: center;
 }
 
-.card{
-    position: absolute;
-    background-color: lightgray;
-}
 
 .col img{
     width: 100px;
     height: 100px;
+    position: absolute;
+    /* transform:rotatey(-180deg); */
+
 }
 
 .row{
@@ -34,9 +35,11 @@ body{
 .window{
     display: flex;
     height: 100vh;
+
 }
 .side-menu{
     width: 20%;
+    font-size: 18px;
 }
 
 .container{
@@ -47,10 +50,14 @@ body{
 }
 
 .name, .themes {
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .score , .retries{
-    margin: 20px;
+    /* margin: 20px; */
     font-size : 5vh;
+}
+
+h1{
+    margin:0;
 }
