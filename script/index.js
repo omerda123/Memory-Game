@@ -1,5 +1,6 @@
 class Board {
     constructor() {
+        this.scoreboard = [];
 
     }
 
@@ -16,6 +17,8 @@ class Board {
 
     initGame(rows, cols) {
         this.clearBoard();
+        this.getScoreboard();
+        this.printScoreboard();
         this.numOfPics = rows * cols / 2;
         this.rows = rows;
         this.cols = cols;
@@ -71,7 +74,7 @@ class Board {
 
     changeRetries(amount) {
         if (amount === "init") {
-            this.retries = 5;
+            this.retries = 10;
         }
         else {
             this.retries = this.retries + amount;
@@ -98,11 +101,13 @@ class Board {
                 document.querySelectorAll(`[id='${this.e1.target.id}']`)[1].style.display = "block";
                 document.querySelectorAll(`[id='${this.e2.target.id}']`)[1].style.display = "block";
                 this.numberOfPairs++;
-                if (this.numberOfPairs === this.numOfPics)
-                    winner.style.display = "block"
+                if (this.numberOfPairs === this.numOfPics) {
+                    winner.style.display = "block";
+                    this.setScoreboard(nameInput.value, this.score);
+                }
             }
             else {
-                this.changeScore(-20);
+                this.changeScore(30);
                 setTimeout(() => {
                     document.querySelectorAll(`[id='${this.e1.target.id}']`)[0].style.display = "block";
                     document.querySelectorAll(`[id='${this.e1.target.id}']`)[1].style.display = "none";
@@ -149,8 +154,41 @@ class Board {
             console.log("error")
         }
     }
-}
+    getScoreboard() {
+        this.scoreboard = JSON.parse(localStorage.getItem("scoreboard"));
+    }
+    setScoreboard(name, score) {
+        this.scoreboard.push({ "name": name, "score": score });
+        console.log(this.scoreboard);
+        localStorage.setItem("scoreboard", JSON.stringify(this.scoreboard));
+    }
+    printScoreboard() {
+        console.log(this.scoreboard);
+        const sortedScoreboard = this.scoreboard.sort(((a,b) => (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0)));
+        let scoreTable = document.querySelector('.score-table');
+        let tbl = document.createElement('table');
+        tbl.style.width = '100%';
+        tbl.setAttribute('border', '1');
+        let tbdy = document.createElement('tbody');
 
+        sortedScoreboard.forEach(player => {
+            let tr = document.createElement('tr');
+            let td = document.createElement('td');
+            td.appendChild(document.createTextNode(player.name))
+            tr.appendChild(td)
+            let td2 = document.createElement('td');
+            td2.appendChild(document.createTextNode(player.score))
+            tr.appendChild(td2)
+            tbdy.appendChild(tr);
+        })
+
+
+
+        tbl.appendChild(tbdy);
+        scoreTable.appendChild(tbl)
+    }
+
+}
 
 
 
@@ -161,15 +199,20 @@ const scoreDiv = document.querySelector(".score");
 const retriesDiv = document.querySelector(".retries");
 const nameInput = document.querySelector("#name");
 const playAgain = document.querySelector(".play-again");
-const gameOver = document.querySelector(".game-over")
-const winner = document.querySelector(".winner")
-
-
+const gameOver = document.querySelector(".game-over");
+const winner = document.querySelector(".winner");
+const getName = document.querySelector(".name-input");
+const submitNameButton = document.querySelector("#submit-name");
 
 playAgain.addEventListener("click", () => gameBoard.initGame(3, 4));
 let clicks = 1;
 
-nameInput.addEventListener("focusout", () => {
+nameInput.addEventListener("focusin", () => {
+    submitNameButton.style.visibility = "visible";
+    document.querySelector(".name p").style.display = "none";
+
+})
+submitNameButton.addEventListener("click", () => {
     document.querySelector(".name").className = "name"
     document.querySelector(".name").innerHTML = `Hello ${nameInput.value}, welcome to the game`
     nameInput.style.display = "none";
@@ -177,9 +220,11 @@ nameInput.addEventListener("focusout", () => {
     document.querySelector(".winner-lower").innerHTML = `You are going to enter the scoreboard! <div class="winner-play-again"> Play again? </div>`
     const winnerPlayAgain = document.querySelector(".winner-play-again");
     winnerPlayAgain.addEventListener("click", () => gameBoard.initGame(3, 4))
+    getName.style.position = "static";
+    container.style.visibility = "visible";
+    submitNameButton.style.visibility = "hidden";
 
-})
-
+});
 difficulty.forEach(item => item.addEventListener("click", gameBoard.createBoardByDifficulty));
 gameBoard.initGame(3, 4);
 

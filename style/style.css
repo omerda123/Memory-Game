@@ -43,6 +43,7 @@ body{
 }
 
 .container{
+    visibility: hidden;
     width: 80%;
 }
 .score-board{
@@ -50,11 +51,16 @@ body{
 }
 
 .name, .themes {
-    margin-top: 80px;
+    margin-top: 40px;
+}
+.name-input{
+    position: absolute;
+    top:100px;
+    left:40vw;
 }
 
 .score , .retries{
-    /* margin: 20px; */
+    margin: 20px;
     font-size : 5vh;
 }
 
@@ -112,4 +118,13 @@ h1{
 .winner img{
     width: 852px;
     height: 480px;
+}
+
+#submit-name{
+    visibility: hidden;
+    background-color: red;
+    border: 0;
+    border-radius:  5px;
+    font-size: 20px;
+
 }
