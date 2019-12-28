@@ -1,7 +1,6 @@
 class Board {
     constructor() {
         this.scoreboard = [];
-
     }
 
     clearBoard() {
@@ -13,12 +12,13 @@ class Board {
         this.changeScore("init")
         this.changeRetries("init")
         this.numberOfPairs = 0;
+
     }
 
     initGame(rows, cols) {
         this.clearBoard();
         this.getScoreboard();
-        this.printScoreboard();
+        // this.printScoreboard();
         this.numOfPics = rows * cols / 2;
         this.rows = rows;
         this.cols = cols;
@@ -36,7 +36,7 @@ class Board {
                 card.src = `./images/card.png`;
                 let img = document.createElement("img");
                 let random = this.randomPicNumberPairs(this.rows, this.cols);
-                img.src = `./images/pokemon/${random}.png`;
+                img.src = `./images/${theme}/${random}.png`;
                 img.className = random;
                 img.id = picId;
                 card.className = random;
@@ -48,18 +48,31 @@ class Board {
         }
     }
 
+
     createBoardByDifficulty(e) {
         gameBoard.clearBoard();
-        switch (e.target.value) {
-            case "easy": gameBoard.initGame(3, 4);
+        switch (difficultyValue) {
+            case "easy":
+                gameBoard.initGame(3, 4);
                 break;
-            case "medium": gameBoard.initGame(4, 5);
+            case "medium":
+                gameBoard.initGame(4, 5);
                 break;
-            case "hard": gameBoard.initGame(4, 6);
+            case "hard":
+                gameBoard.initGame(4, 6);
                 break;
-            default: gameBoard.initGame(3, 4);
+            default:
+                gameBoard.initGame(3, 4);
                 break;
         }
+    }
+
+    toggleClass(classScope, toggleClass, element) {
+        document.querySelectorAll(`.${classScope}`).forEach(item => {
+            if (item.classList.contains(toggleClass))
+                item.classList.remove(toggleClass)
+        })
+        element.classList.add(toggleClass);
     }
 
     changeScore(amount) {
@@ -89,7 +102,6 @@ class Board {
         e.target.style.display = "none";
         document.querySelectorAll(`[id='${e.target.id}']`)[1].style.display = "block";
         this.changeScore(10);
-
         if (clicks === 1) {
             this.e1 = e;
             clicks++;
@@ -163,14 +175,12 @@ class Board {
         localStorage.setItem("scoreboard", JSON.stringify(this.scoreboard));
     }
     printScoreboard() {
-        console.log(this.scoreboard);
-        const sortedScoreboard = this.scoreboard.sort(((a,b) => (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0)));
+        const sortedScoreboard = this.scoreboard.sort(((a, b) => (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0)));
         let scoreTable = document.querySelector('.score-table');
         let tbl = document.createElement('table');
         tbl.style.width = '100%';
         tbl.setAttribute('border', '1');
         let tbdy = document.createElement('tbody');
-
         sortedScoreboard.forEach(player => {
             let tr = document.createElement('tr');
             let td = document.createElement('td');
@@ -203,29 +213,31 @@ const gameOver = document.querySelector(".game-over");
 const winner = document.querySelector(".winner");
 const getName = document.querySelector(".name-input");
 const submitNameButton = document.querySelector("#submit-name");
-
-playAgain.addEventListener("click", () => gameBoard.initGame(3, 4));
+const themes = document.querySelectorAll(".theme");
+let theme = "pokemon"
+let difficultyValue = "easy";
 let clicks = 1;
+playAgain.addEventListener("click", () => gameBoard.initGame(3, 4));
 
 nameInput.addEventListener("focusin", () => {
     submitNameButton.style.visibility = "visible";
-    document.querySelector(".name p").style.display = "none";
 
 })
 submitNameButton.addEventListener("click", () => {
-    document.querySelector(".name").className = "name"
-    document.querySelector(".name").innerHTML = `Hello ${nameInput.value}, welcome to the game`
-    nameInput.style.display = "none";
+    document.querySelector(".name-hello").innerHTML = `Hello  ${nameInput.value}, welcome to the game`
     document.querySelector(".winner-upper").innerHTML = `Good Job ${nameInput.value}, you've made it`
     document.querySelector(".winner-lower").innerHTML = `You are going to enter the scoreboard! <div class="winner-play-again"> Play again? </div>`
     const winnerPlayAgain = document.querySelector(".winner-play-again");
     winnerPlayAgain.addEventListener("click", () => gameBoard.initGame(3, 4))
-    getName.style.position = "static";
-    container.style.visibility = "visible";
-    submitNameButton.style.visibility = "hidden";
+    getName.style.display = "none";
+    container.style.display = "block";
 
 });
-difficulty.forEach(item => item.addEventListener("click", gameBoard.createBoardByDifficulty));
+difficulty.forEach(item => item.addEventListener("click", (e) => {
+    gameBoard.toggleClass(e.target.classList[0], "active", e.target)
+    difficultyValue = e.target.id; gameBoard.createBoardByDifficulty(e)
+}));
+themes.forEach(item => item.addEventListener("click", (e) => { gameBoard.toggleClass(e.target.classList[0], "active", e.target); theme = e.target.id; gameBoard.createBoardByDifficulty() }));
 gameBoard.initGame(3, 4);
-
+gameBoard.printScoreboard();
 

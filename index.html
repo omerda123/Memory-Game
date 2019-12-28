@@ -14,34 +14,41 @@
 <body>
     <div class="window">
         <div class="side-menu">
-            <div class="retries">
+
+            <div class="name-hello">
+
             </div>
-            <div class="score">
+
+
+            <div class="retries active">
+            </div>
+            <div class="score active">
             </div>
             <div class="radios">
-                <input type="radio" class="difficulty" value="easy"> Easy <br>
-                <input type="radio" class="difficulty" value="medium"> Medium<br>
-                <input type="radio" class="difficulty" value="hard"> Hard <br>
+                <div class="difficulty active" id="easy"> Easy</div>
+                <div class="difficulty" id="medium">Medium</div>
+                <div class="difficulty" id="hard">Hard</div>
             </div>
             <div class="themes">
-                <input type="radio" class="theme" value="pokemon"> Pokemon <br>
-                <input type="radio" class="theme" value="guitars"> Guitars <br>
-                <input type="radio" class="theme" value="babies"> Naked girls <br>
+                <div class="theme active" id="pokemon"> Pokemon </div>
+                <div class="theme" id="guitars"> guitars </div>
+                <div class="theme" id="babies"> Naked girls </div>
             </div>
-            <div class="name-input">
-                <div>
-                    <div class="name animated bounce infinite slow red">
-                        <p>Please enter your name</p>
-                    </div>
-                    <button id="submit-name"> Submit </button>
-                </div>
-                <input type="text" id="name">
-            </div>
+
         </div>
         <div class="container">
         </div>
+
+        <div class="name-input">
+            <div class="name animated bounce infinite slow red">
+                Please enter your name
+            </div>
+            <div><input type="text" id="name"></div>
+            <div><button id="submit-name"> Submit </button></div>
+        </div>
+
         <div class="score-board">
-            <h1> Scoreboard</h1>
+            <h1 class="active"> Scoreboard</h1>
             <div class="score-table"></div>
         </div>
     </div>
